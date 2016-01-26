@@ -20,7 +20,7 @@ class BlockerForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'blocker_form';
+    return 'user_blocker_form';
   }
 
   /**
@@ -43,20 +43,39 @@ class BlockerForm extends FormBase {
     return $form;
   }
 
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $username = $form_state->getValue('username');
+    /** @var User $user */
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      $form_state->setError(
+        $form['username'],
+        $this->t('User @username was not found.', ['@username' => $username])
+      );
+    }
+    else {
+      $current_user = \Drupal::currentUser();
+      if ($user->id() == $current_user->id()) {
+        $form_state->setError(
+          $form['username'],
+          $this->t('You cannot block your own account.')
+        );
+      }
+
+    }
+  }
+
+
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $username = $form_state->getValue('username');
-    /** @var User $account */
-    if ($user = user_load_by_name($username)) {
-      $user->block();
-      $user->save();
-      drupal_set_message($this->t('User @username has been blocked.', ['@username' => $username]));
-    }
-    else {
-      drupal_set_message($this->t('User @username was not found.', ['@username' => $username]), 'warning');
-    }
+    /** @var User $user */
+    $user = user_load_by_name($username);
+    $user->block();
+    $user->save();
+    drupal_set_message($this->t('User @username has been blocked.', ['@username' => $username]));
   }
 
 }
