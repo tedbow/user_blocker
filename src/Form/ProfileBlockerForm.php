@@ -39,6 +39,7 @@ class ProfileBlockerForm extends BlockerForm {
       ];
     }
     else {
+      // If the current route does not have user parameter return empty form.
       $form = [];
     }
     return $form;
