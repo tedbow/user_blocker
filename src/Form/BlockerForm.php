@@ -9,7 +9,6 @@ namespace Drupal\user_blocker\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -52,6 +51,8 @@ class BlockerForm extends FormBase {
     /** @var User $account */
     if ($user = user_load_by_name($username)) {
       $user->block();
+      $user->save();
+      drupal_set_message($this->t('User @username has been blocked.', ['@username' => $username]));
     }
     else {
       drupal_set_message($this->t('User @username was not found.', ['@username' => $username]), 'warning');
