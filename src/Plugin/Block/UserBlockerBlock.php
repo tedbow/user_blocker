@@ -17,7 +17,6 @@ use Drupal\user\Entity\User;
  *
  * This block will be used to show "Block" button on the user profile page.
  * It will create a form using the ProfileBlockerForm class.
- * 
  *
  * @Block(
  *  id = "user_blocker_block",
