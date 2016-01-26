@@ -43,10 +43,13 @@ class BlockerForm extends FormBase {
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $username = $form_state->getValue('username');
     /** @var User $user */
-    $user = user_load_by_name($username);
+    $user = $this->getUser($form_state);
     if (empty($user)) {
       $form_state->setError(
         $form['username'],
@@ -61,10 +64,8 @@ class BlockerForm extends FormBase {
           $this->t('You cannot block your own account.')
         );
       }
-
     }
   }
-
 
   /**
    * {@inheritdoc}
@@ -72,10 +73,23 @@ class BlockerForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $username = $form_state->getValue('username');
     /** @var User $user */
-    $user = user_load_by_name($username);
+    $user = $this->getUser($form_state);
     $user->block();
     $user->save();
     drupal_set_message($this->t('User @username has been blocked.', ['@username' => $username]));
+  }
+
+  /**
+   * Get the user object for the submitted user.
+   * 
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return mixed
+   */
+  protected function getUser(FormStateInterface $form_state) {
+    $user_storage = \Drupal::entityTypeManager()->getStorage('user');
+    $users = $user_storage->loadByProperties(['name' => $form_state->getValue('username')]);
+    return array_pop($users);
   }
 
 }
