@@ -7,7 +7,6 @@
 
 namespace Drupal\user_blocker\Form;
 
-use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
 
@@ -30,7 +29,7 @@ class ProfileBlockerForm extends BlockerForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-    $route_match = \Drupal::routeMatch();;
+    $route_match = \Drupal::routeMatch();
     if ($route_match->getRouteName() == 'entity.user.canonical') {
       /** @var User $user */
       $user = $route_match->getParameter('user');
@@ -43,7 +42,6 @@ class ProfileBlockerForm extends BlockerForm {
       $form = [];
     }
     return $form;
-
   }
 
 

@@ -86,10 +86,13 @@ class BlockerForm extends FormBase {
    *
    * @return mixed
    */
+  /*
+   * *** Bonus ** Replace user_load_by_name with calls to this function.
   protected function getUser(FormStateInterface $form_state) {
     $user_storage = \Drupal::entityTypeManager()->getStorage('user');
     $users = $user_storage->loadByProperties(['name' => $form_state->getValue('username')]);
     return array_pop($users);
   }
+  */
 
 }
