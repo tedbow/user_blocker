@@ -49,7 +49,7 @@ class BlockerForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $username = $form_state->getValue('username');
     /** @var User $user */
-    $user = $this->getUser($form_state);
+    $user = user_load_by_name($username);
     if (empty($user)) {
       $form_state->setError(
         $form['username'],
@@ -73,7 +73,7 @@ class BlockerForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $username = $form_state->getValue('username');
     /** @var User $user */
-    $user = $this->getUser($form_state);
+    $user = user_load_by_name($username);
     $user->block();
     $user->save();
     drupal_set_message($this->t('User @username has been blocked.', ['@username' => $username]));
