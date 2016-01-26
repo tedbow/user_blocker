@@ -33,6 +33,7 @@ class ProfileBlockerForm extends BlockerForm {
     if ($route_match->getRouteName() == 'entity.user.canonical') {
       /** @var User $user */
       $user = $route_match->getParameter('user');
+      // Override existing textfield with "value" element. User does not enter this.
       $form['username'] = [
         '#type' => 'value',
         '#value' => $user->getAccountName(),
