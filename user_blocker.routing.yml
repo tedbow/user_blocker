@@ -4,4 +4,4 @@ user_blocker.blocker_form:
     _form: '\Drupal\user_blocker\Form\BlockerForm'
     _title: 'Block a User'
   requirements:
-    _permission: 'block user'
+    _permission: 'block users'
