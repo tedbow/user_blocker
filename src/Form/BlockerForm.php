@@ -81,7 +81,7 @@ class BlockerForm extends FormBase {
 
   /**
    * Get the user object for the submitted user.
-   * 
+   *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *
    * @return mixed
